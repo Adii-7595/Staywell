@@ -1,15 +1,14 @@
-body{
+html, body {
+  height: 100% ;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-
-
-
-}
-.container{
-  flex: 1;
 }
 
+.container {
+  flex: 1 ;
+ 
+}
 
 .navbar{
     height: 5rem;
