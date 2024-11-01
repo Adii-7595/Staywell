@@ -114,6 +114,9 @@ footer {
     border: none !important;
     margin-bottom: 2rem;
   }
+  .listing-card{
+    border: 2px solid grey !important;
+  }
 
   .card-img-top{
     border-radius: 1rem !important;
