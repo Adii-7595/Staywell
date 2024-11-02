@@ -1,0 +1,29 @@
+<% layout("/layouts/boilerplate") %>
+
+    <div class="row mt-3">
+        <div class="col-6 offset-3 ">
+
+            <h3 class="col-6 offset-3">Sign up for Hostel Hub</h3>
+            <form action="/login" method="post" class="row g-3 needs-validation" novalidate>
+                <div>
+                    <label for="username" class="form-label">Username</label>
+                    <input name="username" type="text" class="form-control" id="username" placeholder="enter username"
+                        required>
+                </div>
+
+                <div>
+                    <label for="password" class="form-label">Password</label>
+                    <div>
+                        <input name="password" type="password" class="form-control" id="password"
+                            placeholder="enter password" aria-describedby="inputGroupPrepend" required>
+                      
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <button class="btn btn-success" type="submit">Login</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
