@@ -1,23 +1,15 @@
 const express = require('express')
 const router = express.Router()
 const wrapAsync = require('../utils/wrapAsync.js')
-const ExpressError = require('../utils/ExpressError.js')
-const {listingSchema}= require('../schema.js')
+
 const Listing = require("../models/listing.js");
 
+const { isLoggedIn, isOwner, validateListing } = require('../middleware.js')
 
 
 
-const validateListing = (req,res,next) => {
-    let {error} = listingSchema.validate(req.body)
-    console.log(error)
-    if(error){
-        let errMsg = error.details.map((el)=>el.message).join(",") 
-        throw new ExpressError(400,errMsg)
-    }else{
-        next(); 
-    }
-};
+
+
 //index route
 router.get("/", wrapAsync(async (req, res, next) => {
     try {
@@ -32,7 +24,10 @@ router.get("/", wrapAsync(async (req, res, next) => {
 
 
 //New Route
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn, (req, res) => {
+
+    console.log(req.user)
+
     res.render("listings/form.ejs")
 });
 
@@ -40,14 +35,22 @@ router.get("/new", (req, res) => {
 //show route for individual post
 router.get("/:id", wrapAsync(async (req, res) => {
     let { id } = req.params;
-    const listing = await Listing.findById(id).populate('review')
+    const listing = await Listing.findById(id)
+        .populate({
+            path: 'review',
+            populate: {
+                path: "author"
+            }
+        })
+        .populate('owner')
 
-    if(!listing){
-        req.flash("error","Listing does not Exist")
+
+    if (!listing) {
+        req.flash("error", "Listing does not Exist")
         res.redirect("/listings")
 
     }
-
+    console.log(listing)
     res.render("listings/show.ejs", { listing })
 })
 )
@@ -56,50 +59,63 @@ router.get("/:id", wrapAsync(async (req, res) => {
 
 
 //create route
-router.post("/", validateListing, wrapAsync(async (req, res, next) => {
+router.post("/", isLoggedIn, validateListing, wrapAsync(async (req, res, next) => {
     const newListing = new Listing(req.body.listing)
+    newListing.owner = req.user._id
     await newListing.save()
-    req.flash("success","New Listing Created Successfully")
+    req.flash("success", "New Listing Created Successfully")
     res.redirect("/listings");
 })
 
 );
 
-router.get('/:id/edit', wrapAsync(async (req, res) => {
 
-    
-    let { id } = req.params;
+//edit route
+router.get('/:id/edit',
+    isLoggedIn,
+    isOwner,
+    wrapAsync(async (req, res) => {
 
-    const listing = await Listing.findById(id);
-    if(!listing){
-        req.flash("error","Listing does not Exist")
-        res.redirect("/listings")
 
-    }
-    res.render("listings/edit.ejs", { listing })
-}) 
+        let { id } = req.params;
+
+        const listing = await Listing.findById(id);
+        if (!listing) {
+            req.flash("error", "Listing does not Exist")
+            res.redirect("/listings")
+
+        }
+        res.render("listings/edit.ejs", { listing })
+    })
 )
 
 //update
-router.put("/:id", validateListing, wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-    req.flash("success","Updated Successfully")
+router.put("/:id",
+    isLoggedIn,
+    isOwner,
+    validateListing,
+    wrapAsync(async (req, res) => {
+        let { id } = req.params
+        await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+        req.flash("success", "Updated Successfully")
 
-    res.redirect(`/listings/${id}`);
-})
+        res.redirect(`/listings/${id}`);
+    })
 )
 
 
 //delete route
-router.delete('/:id', wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    let deletedList = await Listing.findByIdAndDelete(id);
-    console.log(deletedList);
-    req.flash("success","Listing Deleted Successfully")
+router.delete('/:id',
+    isLoggedIn,
+    isOwner,
+    wrapAsync(async (req, res) => {
+        let { id } = req.params;
+        let deletedList = await Listing.findByIdAndDelete(id);
+        console.log(deletedList);
+        req.flash("success", "Listing Deleted Successfully")
 
-    res.redirect('/listings');
-})
+        res.redirect('/listings');
+    })
 )
 
 
