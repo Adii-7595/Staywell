@@ -5,30 +5,30 @@
             <div class="container bg-light p-5 rounded shadow-sm mt-5">
                 <h2 class="text-center text-dark mb-4">Create A New Listing</h2>
 
-                <form action="/listings" method="POST" class="row g-3 needs-validation" novalidate>
+                <form action="/listings" method="POST" class="row g-3 needs-validation" novalidate
+                    enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
                         <input name="listing[title]" placeholder="Enter title" type="text" class="form-control"
-                           required >
+                            required>
                     </div>
 
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
                         <textarea name="listing[description]" placeholder="Enter description" class="form-control"
-                            rows="3"  required></textarea>
+                            rows="3" required></textarea>
                     </div>
 
                     <div class="mb-3">
-                        <label for="image" class="form-label">Image</label>
-                        <input name="listing[image]" placeholder="Enter image URL" type="text" class="form-control"
-                            >
+                        <label for="image" class="form-label">Image Upload</label>
+                        <input name="listing[image]" placeholder="Enter image URL" type="file" class="form-control" required>
                     </div>
                     <div class="row">
 
                         <div class="mb-3 col-4">
                             <label for="price" class="form-label">Price</label>
                             <input name="listing[price]" placeholder="Enter price" type="number" class="form-control"
-                               required >
+                                required>
                         </div>
                         <div class="mb-3 col-8">
                             <label for="country" class="form-label">Country</label>
@@ -42,7 +42,7 @@
                     <div class="mb-3">
                         <label for="location" class="form-label">Location</label>
                         <input name="listing[location]" placeholder="Enter location" type="text" class="form-control"
-                           required >
+                            required>
                     </div>
 
                     <div class="text-center ">

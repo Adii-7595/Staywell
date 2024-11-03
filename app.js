@@ -1,7 +1,15 @@
 
+if (process.env.NODE_ENV != "production") {
+    require('dotenv').config();
+
+}
+
+
 const express = require("express");
 const app = express();
 const port = 3000;
+
+
 const mongoose = require("mongoose");
 const path = require("path")
 const methodOverride = require('method-override');
@@ -21,7 +29,6 @@ const User = require("./models/user.js")
 
 
 
-require('dotenv').config();
 
 const MONGO_URL = process.env.MONGO_URL;
 
@@ -47,9 +54,9 @@ const sessionOptions = {
     secret: "mysupersecret",
     resave: false,
     saveUninitialized: true,
-    cookie:{
-        expires: Date.now() + 7*24*60*60*1000,
-        maxAge:7 *24*60*60*1000,
+    cookie: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true
     }
 }
@@ -73,7 +80,7 @@ passport.deserializeUser(User.deserializeUser())
 
 
 //middleware for flashing message (alert)
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
     res.locals.success = req.flash("success")
     res.locals.error = req.flash("error")
     res.locals.currUser = req.user
@@ -81,21 +88,11 @@ app.use((req,res,next)=>{
 })
 
 
-// app.get('/demouser',async(req,res)=>{
-//     let fakeUser = new User({
-//         email:"student@gmail.com",
-//         username:"adityagupta"
-//     })
-
-//    let registeredUser = await User.register(fakeUser,"helloBrother")
-//    res.send(registeredUser)
-
-// })
 
 
 app.use('/listings', listingRouter)
 app.use('/listings/:id/reviews', reviewRouter)
-app.use('/',userRouter)
+app.use('/', userRouter)
 
 
 
