@@ -12,7 +12,7 @@ const listingSchema = new Schema({
     image: {
         url: String,
         filename: String,
-        
+
     },
 
 
@@ -23,16 +23,28 @@ const listingSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Review'
     }],
-    owner :{
+    owner: {
         type: Schema.Types.ObjectId,
         ref: 'User'
+    },
+    geometry: {
+            type: {
+                type: String, // Don't do `{ location: { type: String } }`
+                enum: ['Point'], // 'location.type' must be 'Point'
+                required: true
+            },
+            coordinates: {
+                type: [Number],
+                required: true
+            }
+        }
     }
 
-});
+);
 
 listingSchema.post("findOneAndDelete", async (listing) => {
     if (listing) {
-        await Review.deleteMany({ _id: { $in: listing.review} })
+        await Review.deleteMany({ _id: { $in: listing.review } })
     }
 
 })

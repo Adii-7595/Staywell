@@ -156,3 +156,11 @@ footer {
     background-color:#fe424d !important ;
     border: none !important;
   }
+
+
+  /* mao styling */
+
+  #map{
+    height: 400px;
+    width: 800px;
+  }
