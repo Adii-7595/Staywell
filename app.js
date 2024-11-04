@@ -61,9 +61,7 @@ const sessionOptions = {
     }
 }
 
-app.get("/", (req, res) => {
-    res.send("hi I'm root!");
-});
+
 
 //session manangement and cookies middlewares
 
