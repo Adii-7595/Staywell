@@ -64,7 +64,6 @@ module.exports.create = async (req, res, next) => {
     newListing.geometry = response.body.features[0].geometry
 
     let savedListing = await newListing.save()
-    console.log(savedListing)
     req.flash("success", "New Listing Created Successfully")
     res.redirect("/listings");
 }
@@ -108,7 +107,6 @@ module.exports.update = async (req, res) => {
 
 
     listing = await Listing.findByIdAndUpdate(id, updatedData, {new:true});
-    console.log(listing)
 
    if (typeof req.file !== 'undefined') {
         let url = req.file.path
@@ -123,33 +121,6 @@ module.exports.update = async (req, res) => {
 
 
 
-
-
-//update
-// module.exports.update = async (req, res) => {
-//     let { id } = req.params;
-
-
-//     // Fetch the existing listing first
-//     const existingListing = await Listing.findById(id);
-
-//     // Check if an image file was uploaded
-//     if (req.file) {
-//         // If a new image was uploaded, update the image field
-//         existingListing.image = {
-//             url: req.file.path,
-//             filename: req.file.filename
-//         };
-//     }
-
-//     // Update the other fields
-//     existingListing.set(req.body.listing); // or you can merge the new fields like: { ...req.body.listing, image: existingListing.image }
-
-//     await existingListing.save(); // Save the updated listing
-
-//     req.flash("success", "Updated Successfully");
-//     res.redirect(`/listings/${id}`);
-// }
 
 
 
