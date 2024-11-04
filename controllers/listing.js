@@ -22,8 +22,6 @@ module.exports.index = async (req, res, next) => {
 
 // new route
 module.exports.route = (req, res) => {
-
-
     res.render("listings/form.ejs")
 }
 
@@ -95,25 +93,37 @@ module.exports.edit = async (req, res) => {
 module.exports.update = async (req, res) => {
     let { id } = req.params
 
-    let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+    let listing = await Listing.findById(id)
+
+    let response = await geocodingClient.forwardGeocode({
+        query: req.body.listing.location,
+        limit: 1
+      }).send()
+
+    let updatedData = {
+        ...req.body.listing,
+        geometry:response.body.features[0].geometry
+    }
 
 
 
+    listing = await Listing.findByIdAndUpdate(id, updatedData, {new:true});
+    console.log(listing)
 
-    if (typeof req.file !== 'undefined') {
+   if (typeof req.file !== 'undefined') {
         let url = req.file.path
         let filename = req.file.filename
         listing.image = { url, filename }
         await listing.save()
-
-
     }
-
-
     req.flash("success", "Updated Successfully")
 
     res.redirect(`/listings/${id}`);
 }
+
+
+
+
 
 //update
 // module.exports.update = async (req, res) => {
