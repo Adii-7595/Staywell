@@ -139,6 +139,17 @@ footer {
 
   }
 
+  
+  .img-card{
+    width: 400px;
+    height: 600px;
+  }
+  .card-img-top {
+    width: 400px; /* Set desired width */
+    height: 500px !important; /* Set desired height */
+    object-fit: contain; /* Ensures the entire image fits within the specified area */
+  }
+
   .Listing-link{
     text-decoration: none;
   }
