@@ -31,7 +31,7 @@ const User = require("./models/user.js")
 
 
 
-const MONGO_URL = process.env.ATLASDB_URL;
+const MONGO_URL = process.env.MONGO_URL;
 
 main().then(() => {
     console.log("connected to DB");

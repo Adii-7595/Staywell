@@ -46,7 +46,7 @@
         }
     </style>
 
-    <div class="filters" id="filters">
+    <div class="filters collapse navbar-collapse" id="filters">
         <div class="filter">
             <div> <i class="fa-solid fa-fire"></i></div>
             <p> Trending</p>
@@ -106,8 +106,8 @@
 
     </div>
 
-    <div class="container mt-3">
-        <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-1 ">
+    <div class="container mt-3 ">
+        <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-1 h-75">
             <% for(let listing of allListings) { %>
                 <a href="/listings/<%=listing._id%>" class="Listing-link">
                     <div class="card col">
